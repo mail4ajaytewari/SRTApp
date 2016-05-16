@@ -70,7 +70,7 @@ public class UserProfileController {
 			@RequestParam String sEcho,
 			@RequestParam int iDisplayLength,
 			@RequestParam int iDisplayStart) {
-		
+		logger.debug("Start: getAllProfiles(): RollNo: {}, First Name: {}, Last Name: {}, sEcho: {}, iDisplayLength: {}, iDisplayStart: {}", rollNo,firstName,lastName,sEcho, iDisplayLength,iDisplayStart);
 		JSONObject jsonResponse = new JSONObject();
 		JSONArray data = new JSONArray();
 		JSONArray row;
@@ -112,6 +112,7 @@ public class UserProfileController {
 			return ErrorResponseUtil.getFailureResponse(e);
 		}		
 		
+		logger.debug("End: getAllProfiles(): {}", jsonResponse);
 		return jsonResponse.toString();
 	}
 	
@@ -124,6 +125,7 @@ public class UserProfileController {
 	 */
 	@RequestMapping(value = "/profile/user/{rollNo}", method = RequestMethod.GET)
 	public ResponseEntity<Student> getUserProfile(@PathVariable("rollNo") String rollNo) {
+		logger.debug("Start: getUserProfile(): Roll No: {}", rollNo);
 		Student profile = null;
 			
 		try {
@@ -132,7 +134,7 @@ public class UserProfileController {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return new ResponseEntity<Student>(profile, HttpStatus.BAD_REQUEST);
 		}
-		
+		logger.debug("End: getUserProfile(): ");
 		return new ResponseEntity<Student>(profile, HttpStatus.OK);
 	}
 	
@@ -144,6 +146,7 @@ public class UserProfileController {
 	 */
 	@RequestMapping(value = "/profile/update/{rollNo}", method = RequestMethod.POST)
 	public String updateProfile(@PathVariable("rollNo") String rollNo, @RequestBody Student student) {
+		logger.debug("Start: updateProfile(): Roll No: {}", rollNo);
 		String response = "SUCCESS";;
 		
 		try {
@@ -152,7 +155,7 @@ public class UserProfileController {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);
 		}	
-		
+		logger.debug("End: updateProfile(): {}", response);
 		return response;
 	}
 	
@@ -165,6 +168,7 @@ public class UserProfileController {
 	 */
 	@RequestMapping(value = "/vote/update/{rollNo}", method = RequestMethod.POST)
 	public String voteUpdate(@PathVariable("rollNo") String rollNo, @RequestBody Vote vote) {
+		logger.debug("Start: voteUpdate(): {}", rollNo);
 		vote.setRollNo(rollNo);
 		String response = "SUCCESS";
 		
@@ -174,7 +178,7 @@ public class UserProfileController {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);
 		}	
-		
+		logger.debug("End: voteUpdate(): {}", response);
 		return response;
 	}
 }

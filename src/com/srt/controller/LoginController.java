@@ -28,6 +28,7 @@ public class LoginController {
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout) {
 
+		logger.info("Start: Login Controller - Logout : {} , Error : {}", logout, error);
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
@@ -38,7 +39,7 @@ public class LoginController {
 		}
 
 		model.setViewName("login");
-
+		logger.info("End: Login Controller");
 		return model;
 
 	}

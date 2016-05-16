@@ -25,12 +25,12 @@ public class HomeController {
 	 */
 	@RequestMapping(value = {"/home**"}, method = RequestMethod.GET)
 	public ModelAndView homePage() {
-
+		logger.info("Start: Home Page");
 		ModelAndView model = new ModelAndView();
 		String rollNo = (String) SessionManagementUtil.getSession().getAttribute("rollNo");;
 		model.addObject("rollNo", rollNo);
 		model.setViewName("home");		
-
+		logger.info("End: Home Page");
 		return model;
 	}
 }

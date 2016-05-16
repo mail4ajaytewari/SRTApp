@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.srt.dao.login.LoginDAO;
 import com.srt.exception.ApplicationException;
 import com.srt.model.profile.Login;
+import com.srt.util.AESEncryption;
 import com.srt.util.SessionManagementUtil;
 
 /**
@@ -49,19 +50,29 @@ public class LoginServiceImpl implements LoginService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		logger.debug("Start: loadUserByUsername:");
 		// TODO Auto-generated method stub
 		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
 	    authList.add(new SimpleGrantedAuthority("ROLE_USER"));
+	    UserDetails user = null;
 	    
 	    try {
-			login = loginDAO.getUserCredentials(username);
+	    	String encryptedUsername = AESEncryption.encrypt(username);
+	    	
+			login = loginDAO.getUserCredentials(encryptedUsername);
+			
+			String decryptedPwd = AESEncryption.decrypt(login.getPassword());
 			SessionManagementUtil.getSession().setAttribute("rollNo", login.getRollNo());
+			user = new User(username, decryptedPwd, true, true, true, true, authList);
+			
 		} catch (ApplicationException e) {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+		}catch(Exception e){
+			logger.debug("{}: Username/Password Encryption Failure :: {}", "SYS-ENC-DEC-1000", e);
 		}
-
-		UserDetails user = new User(username, login.getPassword(), true, true, true, true, authList);
-        return user;
+		
+		logger.debug("End: loadUserByUsername:");
+		return user;
 	}
 
 }

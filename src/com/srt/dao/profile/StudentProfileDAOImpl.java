@@ -54,6 +54,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 */
 	@Override
 	public List<Student> searchUserProfiles(Student student) throws ApplicationException {
+		logger.debug("Start: searchUserProfiles");
 		int iDisplayStart = student.getiDisplayStart();
 		int iDisplayLength = student.getiDisplayLength();
 		List<Student> listOfProfiles = null;
@@ -67,7 +68,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		
 		
 		String query = QueryUtil.queryDispenserForRecords(student.getFirstName(), student.getLastName(), student.getRollNo());
-		
+		logger.debug("Query: {}", query);
 		try {
 			listOfProfiles = getNamedParameterJdbcTemplate().query(query, paramMap, new RowMapper<Student>(){
 				@Override
@@ -88,6 +89,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
+		
+		logger.debug("Start: searchUserProfiles");
 		return listOfProfiles;
 	}
 
@@ -98,6 +101,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 */
 	@Override
 	public Student getUserProfile(String rollNo) throws ApplicationException {
+		logger.debug("Start: getUserProfile {}", rollNo);
+		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("rollNo", rollNo);
 		List<Student> listOfProfiles = null;
@@ -127,6 +132,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			Student profile = listOfProfiles.get(0);
 			return profile;
 		}
+		
+		logger.debug("End: getUserProfile");
 		return null;
 	}
 	
@@ -135,9 +142,13 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 */
 	@Override
 	public int getUserProfileCount(Student student) throws ApplicationException {
+		logger.debug("Start: getUserProfileCount {}", student.getRollNo());
+		
 		int totalRows = 0;
 		List<Integer> countOfProfiles = null;
 		String query = QueryUtil.queryDispenserForRecordsCount(student.getFirstName(), student.getLastName(), student.getRollNo());
+		logger.debug("Query:", query);
+		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("firstName", "%" + student.getFirstName() + "%");
 		paramMap.put("lastName", "%" + student.getLastName() + "%");
@@ -161,6 +172,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			totalRows = countOfProfiles.get(0).intValue();
 			return totalRows;
 		}
+		
+		logger.debug("End: getUserProfileCount: Total records - {}", totalRows);
 		return totalRows;
 	}
 
@@ -169,6 +182,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 */
 	@Override
 	public String updateProfileVote(Vote vote) throws ApplicationException{
+		logger.debug("Start: updateProfileVote:");
+		
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("rollNo", vote.getRollNo());
@@ -184,6 +199,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
+		
+		logger.debug("End: updateProfileVote: {}" , response);
 		return String.valueOf(response);
 	}
 
@@ -192,6 +209,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 */
 	@Override
 	public String updateProfile(Student student) throws ApplicationException {
+		logger.debug("Start: updateProfile: {}" , student.getRollNo());
+		
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("rollNo", student.getRollNo());
@@ -208,6 +227,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
+		logger.debug("End: updateProfile: {}" , response);
 		return String.valueOf(response);
 	}
 

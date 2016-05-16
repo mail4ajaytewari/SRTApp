@@ -41,6 +41,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 */
 	@Override
 	public Login getUserCredentials(String username) throws ApplicationException {
+		logger.debug("Start: getUserCredentials");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("username", username);
 		List<Login> userCred = null;
@@ -66,6 +67,7 @@ public class LoginDAOImpl implements LoginDAO {
 			Login loginDetails = userCred.get(0);
 			return loginDetails;
 		}
+		logger.debug("End: getUserCredentials");
 		return null;
 	}
 	
