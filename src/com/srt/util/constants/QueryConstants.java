@@ -1,6 +1,7 @@
 package com.srt.util.constants;
 
 /**
+ * <p>Utility to keep all query constants</p>
  * @author Ajay
  *
  */

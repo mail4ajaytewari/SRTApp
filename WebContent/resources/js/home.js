@@ -4,6 +4,7 @@ var header;
 var profileResponse = '';
 
 $(function() {
+	// Load the datatable when Search Profile tab is active
 	$("#tabs").tabs({
 		activate: function(event, ui) {
 			if(ui.newPanel.selector == "#tabs-searchProfile") {
@@ -12,6 +13,7 @@ $(function() {
 		}
 	});
 	
+	// Make field editable to update profile
 	$('#editProfileBtn').click(function() {
 		$('#firstName').removeAttr("disabled");
 		$('#lastName').removeAttr("disabled");
@@ -20,14 +22,17 @@ $(function() {
 		$('#changeProfileBtn').removeAttr("disabled");
 	});
 	
+	// Phone validation to allow only numeric keys, back space, delete
 	$("#phone").keydown(function(e) {
 		isNumeric(e);
 	});
 	
+	// Email validation
 	$('#email').blur(function(){
 		validateEmail($(this).val());		
 	});
 	
+	// Make ajax call to submit profile details
 	$('#changeProfileBtn').click(function(){
 		var student = new Student();
 		student.firstName = $('#firstName').val();
@@ -38,6 +43,7 @@ $(function() {
 		
 		var isValidEmail = validateEmail(student.email);
 		
+		// Make ajax call if required validation has passed
 		if(isValidEmail) {
 			$.ajax({
 				url   : "profile/update/" + student.rollNo,
@@ -46,6 +52,7 @@ $(function() {
 				data  : JSON.stringify(student),
 				success: function(result) {
 					console.log('Profile Saved Successfully.');
+					// Disable once profile is saved in database
 					$('#firstName').attr("disabled","disabled");
 					$('#lastName').attr("disabled","disabled");
 					$('#email').attr("disabled","disabled");
@@ -60,6 +67,7 @@ $(function() {
 	});
 });
 
+// Function to for phone number validation
 function isNumeric(e) {
     // Allow: backspace, delete, tab, escape, enter and .
     if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
@@ -76,6 +84,7 @@ function isNumeric(e) {
     }
 }
 
+// Function to validate email
 function validateEmail(email) {
     var re = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     var isValid = re.test(email);
@@ -89,6 +98,7 @@ function validateEmail(email) {
     return isValid;
 }
 
+// Make ajax call to fetch profile details for logged in user
 function getUserProfile() {
 	//showLoader();
 	var rollNo = $('#rollNoHidden').val();
@@ -99,6 +109,7 @@ function getUserProfile() {
 		success: function(response) {
 			console.log('Profile Fetched Successfully.');
 			console.log(response.phone);
+			// Populate form fields of my profile tab
 			populateProfileForm(response);
 			//hideLoader();
 		},
@@ -109,6 +120,7 @@ function getUserProfile() {
 	});
 }
 
+// Function to populate form fields on my profile tab
 function populateProfileForm(profileResponse) {
 	$('#firstName').val(profileResponse.firstName);
 	$('#lastName').val(profileResponse.lastName);
@@ -119,6 +131,7 @@ function populateProfileForm(profileResponse) {
 	$('#branch').val(profileResponse.branchName);
 }
 
+// Student function object
 function Student() {
 	this.rollNo = '';
 	this.firstName = '';
@@ -128,5 +141,6 @@ function Student() {
 }
 
 $(document).ready(function() {
+	// Load profile details as user lands on home page
 	getUserProfile();
 });

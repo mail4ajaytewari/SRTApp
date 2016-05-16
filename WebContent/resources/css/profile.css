@@ -1,9 +1,0 @@
-@CHARSET "UTF-8";
-
-.disableTextBoxEdit {
-	readonly : 'readonly'
-}
-
-.enableTextBoxEdit {
-	readonly : 'false'
-}

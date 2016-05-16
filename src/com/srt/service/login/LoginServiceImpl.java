@@ -49,6 +49,7 @@ public class LoginServiceImpl implements LoginService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		logger.debug("Start: loadUserByUsername:");
 		// TODO Auto-generated method stub
 		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
 	    authList.add(new SimpleGrantedAuthority("ROLE_USER"));
@@ -61,7 +62,8 @@ public class LoginServiceImpl implements LoginService {
 		}
 
 		UserDetails user = new User(username, login.getPassword(), true, true, true, true, authList);
-        return user;
+		logger.debug("End: loadUserByUsername:");
+		return user;
 	}
 
 }
