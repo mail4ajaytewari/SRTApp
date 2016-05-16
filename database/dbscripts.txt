@@ -1,0 +1,115 @@
+create table student
+(
+rollNo varchar(10) Not null,
+firstName varchar(200) Not Null, 
+lastName varchar(200),
+email varchar(200),
+phone varchar(10),
+branchId varchar(10) Not Null,
+PRIMARY KEY(rollNo),
+Foreign Key(branchId)
+REFERENCES branch(branchId)
+        ON DELETE CASCADE
+);
+
+create table branch
+(
+branchId varchar(10),
+branchName varchar(50),
+PRIMARY KEY(branchId)
+);
+
+create table voteStastics
+(
+rollNo varchar(10) Not null,
+voteCount int,
+Foreign Key(rollNo)
+REFERENCES student(rollNo)
+        ON DELETE CASCADE
+);
+
+create table login(
+username varchar(50) not null,
+password varchar(100) not null,
+rollNo varchar(10),
+PRIMARY KEY(username),
+foreign key(rollNo) references
+student(rollNo) on delete cascade
+);
+
+insert into branch values('1000','Computer Science');
+insert into branch values('1001','IT');
+insert into branch values('1002','Mechnical');
+insert into branch values('1003','Civil');
+insert into branch values('1004','Chemical');
+insert into branch values('1005','Electronics');
+
+insert into student values('200000','Ajay','Tewari','mail.ajaytewari@gmail.com','1234567890','1000');
+insert into student values('200001','Arika','Tewari','mail.ajaytewari@gmail.com','5301898199','1000');
+insert into student values('200002','Amit','Tewari','mail.ajaytewari@gmail.com','9877964786','1000');
+insert into student values('200003','Akash','Tewari','mail.ajaytewari@gmail.com','8907347721','1000');
+insert into student values('200004','Ajeet','Tewari','mail.ajaytewari@gmail.com','1691319629','1000');
+
+insert into student values('200005','Jhon','Anthony','mail.ajaytewari@gmail.com','3819713171','1001');
+insert into student values('200006','Bob','Cow','mail.ajaytewari@gmail.com','0849751596','1001');
+insert into student values('200007','Harry','Potter','mail.ajaytewari@gmail.com','7940433781','1001');
+insert into student values('200008','Umesh','Kabdola','mail.ajaytewari@gmail.com','6936336646','1001');
+insert into student values('200009','Vinod','Singh','mail.ajaytewari@gmail.com','2981362675','1001');
+
+insert into student values('200010','Brady','Anthony','mail.ajaytewari@gmail.com','7529125853','1002');
+insert into student values('200011','Radhika','Cow','mail.ajaytewari@gmail.com','8153938423','1002');
+insert into student values('200012','Albert','Potter','mail.ajaytewari@gmail.com','1702522436','1002');
+insert into student values('200013','Sam','Kabdola','mail.ajaytewari@gmail.com','3408538344','1002');
+insert into student values('200014','Rocky','Singh','mail.ajaytewari@gmail.com','0942312069','1002');
+
+insert into student values('200015','Tim','Cook','abc@gmail.com','0041207645','1003');
+insert into student values('200016','Johny','Depp','mail@gmail.com','9702790018','1003');
+insert into student values('200017','Sergey','Brin','mail.aja@gmail.com','1092697613','1003');
+insert into student values('200018','Kally','gossling','mail.ajayi@gmail.com','5770470711','1003');
+insert into student values('200019','sparky','Singh','mailtewari@gmail.com','3751166318','1003');
+
+
+insert into voteStastics values('200000',0);
+insert into voteStastics values('200001',0);
+insert into voteStastics values('200002',0);
+insert into voteStastics values('200003',0);
+insert into voteStastics values('200004',0);
+
+insert into voteStastics values('200005',0);
+insert into voteStastics values('200006',0);
+insert into voteStastics values('200007',0);
+insert into voteStastics values('200008',0);
+insert into voteStastics values('200009',0);
+
+insert into voteStastics values('200010',0);
+insert into voteStastics values('200011',0);
+insert into voteStastics values('200012',0);
+insert into voteStastics values('200013',0);
+insert into voteStastics values('200014',0);
+
+insert into voteStastics values('200015',0);
+insert into voteStastics values('200016',0);
+insert into voteStastics values('200017',0);
+insert into voteStastics values('200018',0);
+insert into voteStastics values('200019',0);
+
+insert into login values('ajay','123','200000');
+insert into login values('arika','123','200001');
+insert into login values('amit','123','200002');
+insert into login values('akash','123','200003');
+insert into login values('ajeet','123','200004');
+insert into login values('jhon','123','200005');
+insert into login values('bob','123','200006');
+insert into login values('harry','123','200007');
+insert into login values('umesh','123','200008');
+insert into login values('vinod','123','200009');
+insert into login values('brady','123','200010');
+insert into login values('radhika','123','200011');
+insert into login values('albert','123','200012');
+insert into login values('sam','123','200013');
+insert into login values('rocky','123','200014');
+insert into login values('tim','123','200015');
+insert into login values('johny','123','200016');
+insert into login values('sergey','123','200017');
+insert into login values('kally','123','200018');
+insert into login values('sparky','123','200019');
