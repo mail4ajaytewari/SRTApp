@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.Login;
+import com.srt.model.login.Login;
 import com.srt.util.constants.QueryConstants;
 
 /**

@@ -7,8 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import com.srt.dao.profile.StudentProfileDAO;
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.Student;
-import com.srt.model.profile.Vote;
+import com.srt.model.profile.ProfileSearchRequest;
+import com.srt.model.profile.ProfileSearchResponse;
+import com.srt.model.profile.Profile;
+import com.srt.model.searchGrid.DataTable;
+import com.srt.model.vote.Vote;
 
 /**
  * @author Ajay
@@ -33,16 +36,27 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#searchUserProfiles(com.srt.model.profile.Student)
 	 */
 	@Override
-	public List<Student> searchUserProfiles(Student student) throws ApplicationException {
+	public ProfileSearchResponse searchUserProfiles(ProfileSearchRequest request) throws ApplicationException {
 		// TODO Auto-generated method stub
-		return studentProfileDAO.searchUserProfiles(student);
+		ProfileSearchResponse response = new ProfileSearchResponse();
+		DataTable table = new DataTable();
+		
+		int totalRecords = studentProfileDAO.getUserProfileCount(request.getStudent());
+		table.setTotalRecords(totalRecords);
+		
+		List<Profile> studentList = studentProfileDAO.searchUserProfiles(request);
+		
+		response.setStudent(studentList);
+		response.setDataTable(table);
+		
+		return response;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.srt.service.profile.StudentProfile#getUserProfile(java.lang.String)
 	 */
 	@Override
-	public Student getUserProfile(String rollNo) throws ApplicationException {
+	public Profile getUserProfile(String rollNo) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return studentProfileDAO.getUserProfile(rollNo);
 	}
@@ -51,9 +65,9 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#getUserProfileCount(com.srt.model.profile.Student)
 	 */
 	@Override
-	public int getUserProfileCount(Student student) throws ApplicationException{
+	public int getUserProfileCount(Profile profile) throws ApplicationException{
 		// TODO Auto-generated method stub
-		return studentProfileDAO.getUserProfileCount(student);
+		return studentProfileDAO.getUserProfileCount(profile);
 	}
 
 	/* (non-Javadoc)
@@ -69,9 +83,9 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#updateProfile(com.srt.model.profile.Student)
 	 */
 	@Override
-	public String updateProfile(Student student) throws ApplicationException {
+	public String updateProfile(Profile profile) throws ApplicationException {
 		// TODO Auto-generated method stub
-		return studentProfileDAO.updateProfile(student);
+		return studentProfileDAO.updateProfile(profile);
 	}
 
 }

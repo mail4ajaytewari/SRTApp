@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.srt.dao.login.LoginDAO;
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.Login;
+import com.srt.model.login.Login;
 import com.srt.util.AESEncryption;
 import com.srt.util.SessionManagementUtil;
 

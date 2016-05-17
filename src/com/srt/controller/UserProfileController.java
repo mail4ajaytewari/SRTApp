@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.Student;
-import com.srt.model.profile.Vote;
+import com.srt.model.profile.ProfileSearchRequest;
+import com.srt.model.profile.ProfileSearchResponse;
+import com.srt.model.profile.Profile;
+import com.srt.model.searchGrid.DataTable;
+import com.srt.model.vote.Vote;
 import com.srt.service.profile.StudentProfile;
 import com.srt.util.ErrorResponseUtil;
 
@@ -72,39 +75,54 @@ public class UserProfileController {
 			@RequestParam int iDisplayStart) {
 		logger.debug("Start: getAllProfiles(): RollNo: {}, First Name: {}, Last Name: {}, sEcho: {}, iDisplayLength: {}, iDisplayStart: {}", rollNo,firstName,lastName,sEcho, iDisplayLength,iDisplayStart);
 		JSONObject jsonResponse = new JSONObject();
+		ProfileSearchResponse response = new ProfileSearchResponse();
+		
 		JSONArray data = new JSONArray();
 		JSONArray row;
 		
-		Student student = new Student();
-		student.setRollNo(rollNo.trim());
-		student.setFirstName(firstName.trim());
-		student.setLastName(lastName.trim());
-		student.setiDisplayStart(iDisplayStart);
-		student.setiDisplayLength(iDisplayLength);
+		Profile profile = new Profile();
+		DataTable table = new DataTable();
 		
-		List<Student> profile = null;
+		profile.setRollNo(rollNo.trim());
+		profile.setFirstName(firstName.trim());
+		profile.setLastName(lastName.trim());
+		table.setiDisplayStart(iDisplayStart);
+		table.setiDisplayLength(iDisplayLength);
+		
+		ProfileSearchRequest request = new ProfileSearchRequest();
+		request.setStudent(profile);
+		request.setTable(table);
+		
 		int totalRecords = 0;
 		
 		try {
-			profile = studentProfile.searchUserProfiles(student);
-			totalRecords = studentProfile.getUserProfileCount(student);
+			response = studentProfile.searchUserProfiles(request);			
 			
 			jsonResponse.put("sEcho", sEcho);
 			jsonResponse.put("iTotalRecords", totalRecords);
 			jsonResponse.put("iTotalDisplayRecords", totalRecords);
 			
-			for(Student st : profile) {
-				row = new JSONArray();
-				row.put("");
-				row.put(st.getFirstName());
-				row.put(st.getLastName());
-				row.put(st.getRollNo());
-				row.put(st.getBranchName());
-				row.put(st.getEmail());
-				row.put(st.getPhone());
-				row.put(st.getVotes());
-				data.put(row);
-			}
+			if(null != response) {
+				if(null != response.getStudent()) {
+					List<Profile> profileList = response.getStudent();
+					for(Profile st : profileList) {
+						row = new JSONArray();
+						row.put("");
+						row.put(st.getFirstName());
+						row.put(st.getLastName());
+						row.put(st.getRollNo());
+						row.put(st.getBranchName());
+						row.put(st.getEmail());
+						row.put(st.getPhone());
+						row.put(st.getVotes());
+						data.put(row);
+					}
+				}
+				
+				if(null != response.getDataTable()) {
+					jsonResponse.put("iTotalDisplayRecords", response.getDataTable().getTotalRecords());
+				}
+			}			
 			
 			jsonResponse.put("aaData", data);
 		} catch (ApplicationException e) {
@@ -124,33 +142,33 @@ public class UserProfileController {
 	 * @return
 	 */
 	@RequestMapping(value = "/profile/user/{rollNo}", method = RequestMethod.GET)
-	public ResponseEntity<Student> getUserProfile(@PathVariable("rollNo") String rollNo) {
+	public ResponseEntity<Profile> getUserProfile(@PathVariable("rollNo") String rollNo) {
 		logger.debug("Start: getUserProfile(): Roll No: {}", rollNo);
-		Student profile = null;
+		Profile profile = null;
 			
 		try {
 			profile = studentProfile.getUserProfile(rollNo);
 		} catch (ApplicationException e) {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
-			return new ResponseEntity<Student>(profile, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Profile>(profile, HttpStatus.BAD_REQUEST);
 		}
 		logger.debug("End: getUserProfile(): ");
-		return new ResponseEntity<Student>(profile, HttpStatus.OK);
+		return new ResponseEntity<Profile>(profile, HttpStatus.OK);
 	}
 	
 	/**
 	 * <p>This method is a REST based method which update profile of a user</p>
 	 * 
-	 * @param student
+	 * @param profile
 	 * @return
 	 */
 	@RequestMapping(value = "/profile/update/{rollNo}", method = RequestMethod.POST)
-	public String updateProfile(@PathVariable("rollNo") String rollNo, @RequestBody Student student) {
+	public String updateProfile(@PathVariable("rollNo") String rollNo, @RequestBody Profile profile) {
 		logger.debug("Start: updateProfile(): Roll No: {}", rollNo);
 		String response = "SUCCESS";;
 		
 		try {
-			response = studentProfile.updateProfile(student);
+			response = studentProfile.updateProfile(profile);
 		} catch (ApplicationException e) {
 			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);

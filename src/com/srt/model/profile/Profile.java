@@ -1,6 +1,6 @@
 package com.srt.model.profile;
 
-public class Student {
+public class Profile {
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -8,21 +8,7 @@ public class Student {
 	private String votes;
 	private String branchName;
 	private String rollNo;
-	private int iDisplayStart;
-	private int iDisplayLength;
 	
-	public int getiDisplayLength() {
-		return iDisplayLength;
-	}
-	public void setiDisplayLength(int iDisplayLength) {
-		this.iDisplayLength = iDisplayLength;
-	}
-	public int getiDisplayStart() {
-		return iDisplayStart;
-	}
-	public void setiDisplayStart(int iDisplayStart) {
-		this.iDisplayStart = iDisplayStart;
-	}
 	public String getRollNo() {
 		return rollNo;
 	}

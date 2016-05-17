@@ -14,8 +14,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.Student;
-import com.srt.model.profile.Vote;
+import com.srt.model.profile.ProfileSearchRequest;
+import com.srt.model.profile.Profile;
+import com.srt.model.searchGrid.DataTable;
+import com.srt.model.vote.Vote;
 import com.srt.util.QueryUtil;
 import com.srt.util.constants.QueryConstants;
 
@@ -53,36 +55,39 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 * @see com.srt.dao.profile.StudentProfileDAO#searchUserProfiles(com.srt.model.profile.Student)
 	 */
 	@Override
-	public List<Student> searchUserProfiles(Student student) throws ApplicationException {
+	public List<Profile> searchUserProfiles(ProfileSearchRequest request) throws ApplicationException {
 		logger.debug("Start: searchUserProfiles");
-		int iDisplayStart = student.getiDisplayStart();
-		int iDisplayLength = student.getiDisplayLength();
-		List<Student> listOfProfiles = null;
+		Profile profile = request.getStudent();
+		DataTable table = request.getTable();
+		
+		int iDisplayStart = table.getiDisplayStart();
+		int iDisplayLength = table.getiDisplayLength();
+		List<Profile> listOfProfiles = null;
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("rollNo", student.getRollNo());
-		paramMap.put("firstName", "%" + student.getFirstName() + "%");
-		paramMap.put("lastName", "%" + student.getLastName() + "%");
+		paramMap.put("rollNo", profile.getRollNo());
+		paramMap.put("firstName", "%" + profile.getFirstName() + "%");
+		paramMap.put("lastName", "%" + profile.getLastName() + "%");
 		paramMap.put("start", iDisplayStart);
 		paramMap.put("end", iDisplayLength);
 		
 		
-		String query = QueryUtil.queryDispenserForRecords(student.getFirstName(), student.getLastName(), student.getRollNo());
+		String query = QueryUtil.queryDispenserForRecords(profile.getFirstName(), profile.getLastName(), profile.getRollNo());
 		logger.debug("Query: {}", query);
 		try {
-			listOfProfiles = getNamedParameterJdbcTemplate().query(query, paramMap, new RowMapper<Student>(){
+			listOfProfiles = getNamedParameterJdbcTemplate().query(query, paramMap, new RowMapper<Profile>(){
 				@Override
-				public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public Profile mapRow(ResultSet rs, int rowNum) throws SQLException {
 					// TODO Auto-generated method stub
-					Student student = new Student();
-					student.setFirstName(rs.getString("firstName"));
-					student.setLastName(rs.getString("lastName"));
-					student.setRollNo(rs.getString("rollNo"));
-					student.setBranchName(rs.getString("branchName"));
-					student.setEmail(rs.getString("email"));
-					student.setPhone(rs.getString("phone"));
-					student.setVotes(rs.getString("votes"));
-					return student;
+					Profile profile = new Profile();
+					profile.setFirstName(rs.getString("firstName"));
+					profile.setLastName(rs.getString("lastName"));
+					profile.setRollNo(rs.getString("rollNo"));
+					profile.setBranchName(rs.getString("branchName"));
+					profile.setEmail(rs.getString("email"));
+					profile.setPhone(rs.getString("phone"));
+					profile.setVotes(rs.getString("votes"));
+					return profile;
 				}			
 			});
 		}catch(DataAccessException e){
@@ -100,27 +105,27 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 * @see com.srt.dao.profile.StudentProfileDAO#getUserProfile(java.lang.String)
 	 */
 	@Override
-	public Student getUserProfile(String rollNo) throws ApplicationException {
+	public Profile getUserProfile(String rollNo) throws ApplicationException {
 		logger.debug("Start: getUserProfile {}", rollNo);
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("rollNo", rollNo);
-		List<Student> listOfProfiles = null;
+		List<Profile> listOfProfiles = null;
 		
 		try {
-			listOfProfiles = getNamedParameterJdbcTemplate().query(QueryConstants.GET_USER_PROFILE_FOR_ROLLNO, paramMap, new RowMapper<Student>(){
+			listOfProfiles = getNamedParameterJdbcTemplate().query(QueryConstants.GET_USER_PROFILE_FOR_ROLLNO, paramMap, new RowMapper<Profile>(){
 				@Override
-				public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public Profile mapRow(ResultSet rs, int rowNum) throws SQLException {
 					// TODO Auto-generated method stub
-					Student student = new Student();
-					student.setFirstName(rs.getString("firstName"));
-					student.setLastName(rs.getString("lastName"));
-					student.setRollNo(rs.getString("rollNo"));
-					student.setBranchName(rs.getString("branchName"));
-					student.setEmail(rs.getString("email"));
-					student.setPhone(rs.getString("phone"));
-					student.setVotes(rs.getString("votes"));
-					return student;
+					Profile profile = new Profile();
+					profile.setFirstName(rs.getString("firstName"));
+					profile.setLastName(rs.getString("lastName"));
+					profile.setRollNo(rs.getString("rollNo"));
+					profile.setBranchName(rs.getString("branchName"));
+					profile.setEmail(rs.getString("email"));
+					profile.setPhone(rs.getString("phone"));
+					profile.setVotes(rs.getString("votes"));
+					return profile;
 				}			
 			});
 		}catch(DataAccessException e) {
@@ -129,7 +134,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		}
 		
 		if(null != listOfProfiles && null != listOfProfiles.get(0)) {
-			Student profile = listOfProfiles.get(0);
+			Profile profile = listOfProfiles.get(0);
 			return profile;
 		}
 		
@@ -141,18 +146,18 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 * @see com.srt.dao.profile.StudentProfileDAO#getUserProfileCount(com.srt.model.profile.Student)
 	 */
 	@Override
-	public int getUserProfileCount(Student student) throws ApplicationException {
-		logger.debug("Start: getUserProfileCount {}", student.getRollNo());
+	public int getUserProfileCount(Profile profile) throws ApplicationException {
+		logger.debug("Start: getUserProfileCount {}", profile.getRollNo());
 		
 		int totalRows = 0;
 		List<Integer> countOfProfiles = null;
-		String query = QueryUtil.queryDispenserForRecordsCount(student.getFirstName(), student.getLastName(), student.getRollNo());
+		String query = QueryUtil.queryDispenserForRecordsCount(profile.getFirstName(), profile.getLastName(), profile.getRollNo());
 		logger.debug("Query:", query);
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("firstName", "%" + student.getFirstName() + "%");
-		paramMap.put("lastName", "%" + student.getLastName() + "%");
-		paramMap.put("rollNo", "%" + student.getRollNo() + "%");
+		paramMap.put("firstName", "%" + profile.getFirstName() + "%");
+		paramMap.put("lastName", "%" + profile.getLastName() + "%");
+		paramMap.put("rollNo", "%" + profile.getRollNo() + "%");
 		
 		try {
 			countOfProfiles = getNamedParameterJdbcTemplate().query(query, paramMap, new RowMapper<Integer>(){
@@ -208,16 +213,16 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 	 * @see com.srt.dao.profile.StudentProfileDAO#updateProfile(com.srt.model.profile.Student)
 	 */
 	@Override
-	public String updateProfile(Student student) throws ApplicationException {
-		logger.debug("Start: updateProfile: {}" , student.getRollNo());
+	public String updateProfile(Profile profile) throws ApplicationException {
+		logger.debug("Start: updateProfile: {}" , profile.getRollNo());
 		
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("rollNo", student.getRollNo());
-		paramMap.put("firstName", student.getFirstName());
-		paramMap.put("lastName", student.getLastName());
-		paramMap.put("email", student.getEmail());
-		paramMap.put("phone", student.getPhone());
+		paramMap.put("rollNo", profile.getRollNo());
+		paramMap.put("firstName", profile.getFirstName());
+		paramMap.put("lastName", profile.getLastName());
+		paramMap.put("email", profile.getEmail());
+		paramMap.put("phone", profile.getPhone());
 		
 		int response = 0;
 		
