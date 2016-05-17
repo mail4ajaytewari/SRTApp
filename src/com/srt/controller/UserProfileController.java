@@ -93,18 +93,15 @@ public class UserProfileController {
 		request.setStudent(profile);
 		request.setTable(table);
 		
-		int totalRecords = 0;
-		
 		try {
 			response = studentProfile.searchUserProfiles(request);			
 			
 			jsonResponse.put("sEcho", sEcho);
-			jsonResponse.put("iTotalRecords", totalRecords);
-			jsonResponse.put("iTotalDisplayRecords", totalRecords);
 			
 			if(null != response) {
 				if(null != response.getStudent()) {
 					List<Profile> profileList = response.getStudent();
+					
 					for(Profile st : profileList) {
 						row = new JSONArray();
 						row.put("");
@@ -120,6 +117,7 @@ public class UserProfileController {
 				}
 				
 				if(null != response.getDataTable()) {
+					jsonResponse.put("iTotalRecords", response.getDataTable().getTotalRecords());
 					jsonResponse.put("iTotalDisplayRecords", response.getDataTable().getTotalRecords());
 				}
 			}			

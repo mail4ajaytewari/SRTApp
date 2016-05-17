@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.srt.dao.profile.StudentProfileDAO;
 import com.srt.exception.ApplicationException;
@@ -36,6 +39,8 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#searchUserProfiles(com.srt.model.profile.Student)
 	 */
 	@Override
+	@Transactional
+	@Cacheable("profiles")
 	public ProfileSearchResponse searchUserProfiles(ProfileSearchRequest request) throws ApplicationException {
 		// TODO Auto-generated method stub
 		ProfileSearchResponse response = new ProfileSearchResponse();
@@ -56,6 +61,7 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#getUserProfile(java.lang.String)
 	 */
 	@Override
+	@Cacheable("profiles")
 	public Profile getUserProfile(String rollNo) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return studentProfileDAO.getUserProfile(rollNo);
@@ -74,6 +80,7 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#updateProfileVote(com.srt.model.profile.Vote)
 	 */
 	@Override
+	@CacheEvict(value="profiles", key="#vote.rollNo")
 	public String updateProfileVote(Vote vote) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return studentProfileDAO.updateProfileVote(vote);
@@ -83,6 +90,7 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#updateProfile(com.srt.model.profile.Student)
 	 */
 	@Override
+	@CacheEvict(value="profiles", key="#profile.rollNo")
 	public String updateProfile(Profile profile) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return studentProfileDAO.updateProfile(profile);

@@ -2,12 +2,17 @@
  <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-     
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+    
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
+    
 	<bean id="studentProfileDAO" class="com.srt.dao.profile.StudentProfileDAOImpl" lazy-init="true">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
         <property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
@@ -21,12 +26,17 @@
 		<constructor-arg ref="dataSource"></constructor-arg>  
 	</bean>
 	
-     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/srt"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>
+    
     
     <bean id="loginDAO" class="com.srt.dao.login.LoginDAOImpl" lazy-init="true">
     	<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
