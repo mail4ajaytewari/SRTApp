@@ -50,6 +50,10 @@ import com.srt.util.ErrorResponseUtil;
 public class UserProfileController {
 
 	private StudentProfile studentProfile;
+	private String sEcho;
+	private int iDisplayLength;
+	private int iDisplayStart;
+	
 	//@Autowired
 	//private ApplicationContext appContext;
 	
@@ -78,7 +82,6 @@ public class UserProfileController {
 	 */
 	
 	@RequestMapping(value = "/search/profiles", method = RequestMethod.POST)
-	@Cacheable("profiles")
 	public String getAllProfiles( 
 			@RequestParam String rollNo,
 			@RequestParam String firstName,
@@ -87,60 +90,23 @@ public class UserProfileController {
 			@RequestParam int iDisplayLength,
 			@RequestParam int iDisplayStart) {
 		logger.debug("Start: getAllProfiles(): RollNo: {}, First Name: {}, Last Name: {}, sEcho: {}, iDisplayLength: {}, iDisplayStart: {}", rollNo,firstName,lastName,sEcho, iDisplayLength,iDisplayStart);
-		JSONObject jsonResponse = new JSONObject();
-		ProfileSearchResponse response = new ProfileSearchResponse();
-		
-		JSONArray data = new JSONArray();
-		JSONArray row;
-		
+		String jsonResponse = "";
 		Profile profile = new Profile();
-		DataTable table = new DataTable();
 		
-		profile.setRollNo(rollNo.trim());
-		profile.setFirstName(firstName.trim());
-		profile.setLastName(lastName.trim());
-		table.setiDisplayStart(iDisplayStart);
-		table.setiDisplayLength(iDisplayLength);
+		this.sEcho = sEcho;
+		this.iDisplayLength = iDisplayLength;
+		this.iDisplayStart = iDisplayStart;
 		
-		ProfileSearchRequest request = new ProfileSearchRequest();
-		request.setStudent(profile);
-		request.setTable(table);
+		profile.setRollNo(rollNo);
+		profile.setFirstName(firstName);
+		profile.setLastName(lastName);
 		
 		try {
-			response = studentProfile.searchUserProfiles(request);			
-			
-			jsonResponse.put("sEcho", sEcho);
-			
-			if(null != response) {
-				if(null != response.getStudent()) {
-					List<Profile> profileList = response.getStudent();
-					
-					for(Profile st : profileList) {
-						row = new JSONArray();
-						row.put("");
-						row.put(st.getFirstName());
-						row.put(st.getLastName());
-						row.put(st.getRollNo());
-						row.put(st.getBranchName());
-						row.put(st.getEmail());
-						row.put(st.getPhone());
-						row.put(st.getVotes());
-						data.put(row);
-					}
-				}
-				
-				if(null != response.getDataTable()) {
-					jsonResponse.put("iTotalRecords", response.getDataTable().getTotalRecords());
-					jsonResponse.put("iTotalDisplayRecords", response.getDataTable().getTotalRecords());
-				}
-			}			
-			
-			jsonResponse.put("aaData", data);
-		} catch (ApplicationException e) {
+			jsonResponse = getAllProfiles(rollNo, profile);
+		}catch (ApplicationException e) {
 			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);			
 			return ErrorResponseUtil.getFailureResponse(e);
-		}		
-		
+		}
 		logger.debug("End: getAllProfiles(): {}", jsonResponse);
 		return jsonResponse.toString();
 	}
@@ -153,7 +119,6 @@ public class UserProfileController {
 	 * @return
 	 */
 	@RequestMapping(value = "/profile/user/{rollNo}", method = RequestMethod.GET)
-	@Cacheable("profiles")
 	public ResponseEntity<Profile> getUserProfile(@PathVariable("rollNo") String rollNo) {
 		logger.debug("Start: getUserProfile(): Roll No: {}", rollNo);
 		Profile profile = null;
@@ -194,6 +159,63 @@ public class UserProfileController {
 		return response;
 	}
 	
+	@Cacheable("profiles")
+	public String getAllProfiles(String rollNo, Profile profile) throws ApplicationException{
+		ProfileSearchResponse response = new ProfileSearchResponse();
+		JSONObject jsonResponse = new JSONObject();
+		
+		JSONArray data = new JSONArray();
+		JSONArray row;
+		
+		DataTable table = new DataTable();
+		
+		profile.setRollNo(profile.getRollNo().trim());
+		profile.setFirstName(profile.getFirstName().trim());
+		profile.setLastName(profile.getLastName().trim());
+		table.setiDisplayStart(iDisplayStart);
+		table.setiDisplayLength(iDisplayLength);
+		
+		ProfileSearchRequest request = new ProfileSearchRequest();
+		request.setStudent(profile);
+		request.setTable(table);
+		
+		try {
+			response = studentProfile.searchUserProfiles(request);			
+			
+			jsonResponse.put("sEcho", sEcho);
+			
+			if(null != response) {
+				if(null != response.getStudent()) {
+					List<Profile> profileList = response.getStudent();
+					
+					for(Profile st : profileList) {
+						row = new JSONArray();
+						row.put("");
+						row.put(st.getFirstName());
+						row.put(st.getLastName());
+						row.put(st.getRollNo());
+						row.put(st.getBranchName());
+						row.put(st.getEmail());
+						row.put(st.getPhone());
+						row.put(st.getVotes());
+						data.put(row);
+					}
+				}
+				
+				if(null != response.getDataTable()) {
+					jsonResponse.put("iTotalRecords", response.getDataTable().getTotalRecords());
+					jsonResponse.put("iTotalDisplayRecords", response.getDataTable().getTotalRecords());
+				}
+			}			
+			
+			jsonResponse.put("aaData", data);
+		}catch (ApplicationException e) {
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);			
+			throw new ApplicationException(clazz, "Application Exception");
+		}
+		
+		return jsonResponse.toString();
+	}
 	/**
 	 * <p>This method is a REST based method which updates vote count of a user.</p>
 	 * 
