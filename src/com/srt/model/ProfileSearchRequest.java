@@ -2,6 +2,11 @@ package com.srt.model;
 
 import com.srt.model.DataTable;
 
+/**
+ * <p>This model class encapsulate profile search request.</p>
+ * @author Ajay
+ *
+ */
 public class ProfileSearchRequest {
 	private Profile profile;
 	private DataTable table;

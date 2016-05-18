@@ -7,6 +7,12 @@ import com.srt.model.ProfileSearchRequest;
 import com.srt.model.Profile;
 import com.srt.model.Vote;
 
+/**
+ * <p>This interface provide method signature to perform operations
+ * on user profile for DAO layer.</p>
+ * @author Ajay
+ *
+ */
 public interface StudentProfileDAO {
 	public List<Profile> searchUserProfiles(ProfileSearchRequest request) throws ApplicationException;
 	public Profile getUserProfile(String rollNo) throws ApplicationException;

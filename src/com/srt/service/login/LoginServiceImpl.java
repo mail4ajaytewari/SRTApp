@@ -18,6 +18,7 @@ import com.srt.util.AESEncryption;
 import com.srt.util.SessionManagementUtil;
 
 /**
+ * <p>This class is service layer for login functionality</p>
  * @author Ajay
  *
  */
@@ -45,7 +46,11 @@ public class LoginServiceImpl implements LoginService {
 		this.loginDAO = loginDAO;
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method validate the user credentials against encrypted user
+	 * details fetched from database</p>
+	 * 
+	 * (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
 	@Override
@@ -66,9 +71,9 @@ public class LoginServiceImpl implements LoginService {
 			user = new User(username, decryptedPwd, true, true, true, true, authList);
 			
 		} catch (ApplicationException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 		}catch(Exception e){
-			logger.debug("{}: Username/Password Encryption Failure :: {}", "SYS-ENC-DEC-1000", e);
+			logger.error("{}: Username/Password Encryption Failure :: {}", "SYS-ENC-DEC-1000", e);
 		}
 		
 		logger.debug("End: loadUserByUsername:");

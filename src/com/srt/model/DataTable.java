@@ -1,5 +1,10 @@
 package com.srt.model;
 
+/**
+ * <p>This model class represent data table for pagination</p>
+ * @author Ajay
+ *
+ */
 public class DataTable {
 	private int iDisplayStart;
 	private int iDisplayLength;

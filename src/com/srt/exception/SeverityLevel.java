@@ -3,6 +3,7 @@ package com.srt.exception;
 import ch.qos.logback.classic.Level;
 
 /**
+ * <p>This enum definition provides custom severity level for exceptions</p>
  * @author Ajay
  *
  */

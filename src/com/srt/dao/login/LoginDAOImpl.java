@@ -36,7 +36,9 @@ public class LoginDAOImpl implements LoginDAO {
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 	
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method fetches user credentials based on username</p>
+	 * (non-Javadoc)
 	 * @see com.srt.dao.login.LoginDAO#getUserCredentials(java.lang.String)
 	 */
 	@Override
@@ -60,7 +62,7 @@ public class LoginDAOImpl implements LoginDAO {
 				}			
 			});
 		}catch(DataAccessException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "ERR-LOGIN-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "ERR-LOGIN-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "ERR-LOGIN-1000", e);
 		}
 		

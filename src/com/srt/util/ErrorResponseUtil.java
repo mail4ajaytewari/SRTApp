@@ -12,6 +12,7 @@ import com.srt.exception.ApplicationException;
  */
 public class ErrorResponseUtil {
 	/**
+	 * <p>This method returns custom failure response in JSON format</p>
 	 * @param ApplicationException
 	 * @return String
 	 */

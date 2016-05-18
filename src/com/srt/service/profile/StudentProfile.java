@@ -6,6 +6,11 @@ import com.srt.model.ProfileSearchResponse;
 import com.srt.model.Vote;
 import com.srt.model.Profile;
 
+/**
+ * <p>This interface provides method signatures for service layer.</p>
+ * @author Ajay
+ *
+ */
 public interface StudentProfile {
 	public ProfileSearchResponse searchUserProfiles(ProfileSearchRequest request) throws ApplicationException;
 	public Profile getUserProfile(String rollNo) throws ApplicationException;

@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
 /**
+ * <p>This utility class classify the exceptions based on severity level 
+ * and log them as appropriate like Error, debug, trace etc</p>
  * @author Ajay
  *
  */
@@ -33,7 +35,7 @@ public class ExceptionUtility {
     }
 	
 	/**
-	 * 
+	 * <p>This method logs the exceptions based on thier severity</p>
 	 */
 	public void handleException() {
 		if (SeverityLevel.ERROR.toString().equalsIgnoreCase(this.severity)) {
@@ -60,6 +62,7 @@ public class ExceptionUtility {
 	}
 	
 	/**
+	 * <p></p>
 	 * @param throwable
 	 * @return
 	 */

@@ -17,6 +17,7 @@ import com.srt.model.Profile;
 import com.srt.model.Vote;
 
 /**
+ * <p>This class provide service layer to fetch, search or update profile details</p>
  * @author Ajay
  *
  */
@@ -35,7 +36,10 @@ public class StudentProfileImpl implements StudentProfile {
 		this.studentProfileDAO = studentProfileDAO;
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method fetches all profiles. The results are cacheable
+	 * </p>
+	 * (non-Javadoc)
 	 * @see com.srt.service.profile.StudentProfile#searchUserProfiles(com.srt.model.profile.Student)
 	 */
 	@Override

@@ -1,5 +1,10 @@
 package com.srt.model;
 
+/**
+ * <p>This model class represents vote object to capture votes by users.</p>
+ * @author Ajay
+ *
+ */
 public class Vote {
 	private String rollNo;
 	private String voteCount;

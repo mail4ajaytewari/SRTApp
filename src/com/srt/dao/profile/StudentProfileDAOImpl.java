@@ -2,6 +2,7 @@ package com.srt.dao.profile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,9 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method fetches all user profiles from database</p>
+	 * (non-Javadoc)
 	 * @see com.srt.dao.profile.StudentProfileDAO#searchUserProfiles(com.srt.model.profile.Student)
 	 */
 	@Override
@@ -62,7 +65,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		
 		int iDisplayStart = table.getiDisplayStart();
 		int iDisplayLength = table.getiDisplayLength();
-		List<Profile> listOfProfiles = null;
+		List<Profile> listOfProfiles = new ArrayList<Profile>();
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("rollNo", profile.getRollNo());
@@ -91,7 +94,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 				}			
 			});
 		}catch(DataAccessException e){
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
 		
@@ -101,7 +104,9 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 
 	
 	
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method fetches a user profiles from database based on rollNo</p>
+	 * (non-Javadoc)
 	 * @see com.srt.dao.profile.StudentProfileDAO#getUserProfile(java.lang.String)
 	 */
 	@Override
@@ -110,7 +115,8 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("rollNo", rollNo);
-		List<Profile> listOfProfiles = null;
+		List<Profile> listOfProfiles = new ArrayList<Profile>();
+		Profile profile = new Profile();
 		
 		try {
 			listOfProfiles = getNamedParameterJdbcTemplate().query(QueryConstants.GET_USER_PROFILE_FOR_ROLLNO, paramMap, new RowMapper<Profile>(){
@@ -129,20 +135,21 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 				}			
 			});
 		}catch(DataAccessException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
 		
 		if(null != listOfProfiles && null != listOfProfiles.get(0)) {
-			Profile profile = listOfProfiles.get(0);
-			return profile;
+			profile = listOfProfiles.get(0);
 		}
 		
 		logger.debug("End: getUserProfile");
-		return null;
+		return profile;
 	}
 	
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method get the total count of profiles based on search criteria</p>
+	 * (non-Javadoc)
 	 * @see com.srt.dao.profile.StudentProfileDAO#getUserProfileCount(com.srt.model.profile.Student)
 	 */
 	@Override
@@ -169,7 +176,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 				}			
 			});
 		}catch(DataAccessException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
 		
@@ -182,7 +189,9 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		return totalRows;
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method updates the vote for a profile</p>
+	 * (non-Javadoc)
 	 * @see com.srt.dao.profile.StudentProfileDAO#updateProfileVote(com.srt.model.profile.Vote)
 	 */
 	@Override
@@ -201,7 +210,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			//String obj = null;
 			//obj.toString();
 		}catch(DataAccessException | NullPointerException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
 		
@@ -209,7 +218,9 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		return String.valueOf(response);
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method updates the profile details</p>
+	 * (non-Javadoc)
 	 * @see com.srt.dao.profile.StudentProfileDAO#updateProfile(com.srt.model.profile.Student)
 	 */
 	@Override
@@ -229,7 +240,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		try {
 			response = getNamedParameterJdbcTemplate().update(QueryConstants.UPDATE_PROFILE, paramMap);
 		}catch(DataAccessException | NullPointerException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
 		logger.debug("End: updateProfile: {}" , response);

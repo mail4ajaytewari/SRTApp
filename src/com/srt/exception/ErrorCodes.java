@@ -1,6 +1,7 @@
 package com.srt.exception;
 
 /**
+ * <p>This enum definition provided custom error codes</p>
  * @author Ajay
  *
  */

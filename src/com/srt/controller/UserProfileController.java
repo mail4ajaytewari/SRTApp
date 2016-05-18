@@ -124,7 +124,7 @@ public class UserProfileController {
 			
 			jsonResponse.put("aaData", data);
 		} catch (ApplicationException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);			
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);			
 			return ErrorResponseUtil.getFailureResponse(e);
 		}		
 		
@@ -147,7 +147,7 @@ public class UserProfileController {
 		try {
 			profile = studentProfile.getUserProfile(rollNo);
 		} catch (ApplicationException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return new ResponseEntity<Profile>(profile, HttpStatus.BAD_REQUEST);
 		}
 		logger.debug("End: getUserProfile(): ");
@@ -168,7 +168,7 @@ public class UserProfileController {
 		try {
 			response = studentProfile.updateProfile(profile);
 		} catch (ApplicationException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);
 		}	
 		logger.debug("End: updateProfile(): {}", response);
@@ -191,7 +191,7 @@ public class UserProfileController {
 		try {
 			response = studentProfile.updateProfileVote(vote);
 		} catch (ApplicationException e) {
-			logger.debug("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
+			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);
 		}	
 		logger.debug("End: voteUpdate(): {}", response);

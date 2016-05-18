@@ -1,5 +1,10 @@
 package com.srt.model;
 
+/**
+ * <p>This model object represent login details of user.</p>
+ * @author Ajay
+ *
+ */
 public class Login {
 	private String username;
 	private String password;

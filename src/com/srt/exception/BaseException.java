@@ -1,6 +1,7 @@
 package com.srt.exception;
 
 /**
+ * <p>This class is the base class of all custom exceptions</p>
  * @author Ajay
  *
  */

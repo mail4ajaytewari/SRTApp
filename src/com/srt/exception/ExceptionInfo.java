@@ -1,5 +1,10 @@
 package com.srt.exception;
 
+/**
+ * <p>This class represents exception object to capture error code and error messages.</p>
+ * @author Ajay
+ *
+ */
 public class ExceptionInfo {
 
     private String errorCode;    

@@ -1,5 +1,10 @@
 package com.srt.model;
 
+/**
+ * <p>This model class encapsulates Profile details of user.</p>
+ * @author Ajay
+ *
+ */
 public class Profile {
 	private String firstName;
 	private String lastName;
