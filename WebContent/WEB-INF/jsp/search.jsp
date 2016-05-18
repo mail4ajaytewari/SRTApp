@@ -34,8 +34,7 @@
 					<th width="15%">Branch Name</th>
 				</tr>
 			</thead>
-		</table>
-	
+		</table>	
 	</div>
 </body>
 </html>

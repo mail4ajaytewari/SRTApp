@@ -151,12 +151,16 @@ function updateVote(rollNo, voteCount) {
 		type  : "POST",
 		contentType: "application/json; charset=utf-8",
 		data  : JSON.stringify(vote),
-		success: function(result) {
-			console.log('Vote Saved Successfully.');
+		success: function(response) {
+			console.log('Vote Saved Successfully.' + response);
 			
-			var voteColId = rollNo + '_vote';
-			$('#' + rollNo).attr('href','javascript:votePopupHandler(' + rollNo + ',' + voteCount + ');');
-			$('#' + voteColId).text(voteCount);
+			response = JSON.parse(response);
+			
+			if(response.success === "success") {
+				var voteColId = rollNo + '_vote';
+				$('#' + rollNo).attr('href','javascript:votePopupHandler(' + rollNo + ',' + voteCount + ');');
+				$('#' + voteColId).text(voteCount);
+			}			
 		},
 		error: function(result){
 			//hideLoader();

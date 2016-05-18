@@ -73,8 +73,15 @@
 	  				</tr>
 	  			</table>
 			</form>
-			<input id="changeProfileBtn" type="button" value="Submit" disabled="disabled"/>
-			<input id="editProfileBtn" type="button" value="Edit" />
+			<table>
+				<tr>
+					<td><input id="changeProfileBtn" type="button" value="Submit" disabled="disabled"/></td>
+					<td><input id="editProfileBtn" type="button" value="Edit" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><label id="submitResponse"></label></td>
+				</tr>				
+			</table>
 		</div>
 		
 		<div id="tabs-searchProfile">
@@ -108,7 +115,7 @@
 					</tr>
 				</thead>
 				</table>	
-			</div>
+			</div>	
 			
 			<div id="dialog-voting" title="Profile Vote">
 				<form action="" method="post">

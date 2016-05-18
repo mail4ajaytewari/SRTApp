@@ -20,6 +20,7 @@ $(function() {
 		$('#email').removeAttr("disabled");
 		$('#phone').removeAttr("disabled");
 		$('#changeProfileBtn').removeAttr("disabled");
+		$('#submitResponse').html("");
 	});
 	
 	// Phone validation to allow only numeric keys, back space, delete
@@ -50,17 +51,25 @@ $(function() {
 				type  : "POST",
 				contentType: "application/json; charset=utf-8",
 				data  : JSON.stringify(student),
-				success: function(result) {
-					console.log('Profile Saved Successfully.');
-					// Disable once profile is saved in database
-					$('#firstName').attr("disabled","disabled");
-					$('#lastName').attr("disabled","disabled");
-					$('#email').attr("disabled","disabled");
-					$('#phone').attr("disabled","disabled");
-					$('#changeProfileBtn').attr("disabled","disabled");
+				success: function(response) {
+					console.log('Profile Saved Successfully.' + response);
+					response = JSON.parse(response);
+					
+					if(response.success === 'success') {
+						$('#submitResponse').html("<font color='green'>" + response.message + "</font>");
+						// Disable once profile is saved in database
+						$('#firstName').attr("disabled","disabled");
+						$('#lastName').attr("disabled","disabled");
+						$('#email').attr("disabled","disabled");
+						$('#phone').attr("disabled","disabled");
+						$('#changeProfileBtn').attr("disabled","disabled");
+					}else {
+						$('#submitResponse').html("<font color='red'>" + response.message + "</font>");
+					}					
 				},
-				error: function(result){
-					//hideLoader();
+				error: function(response){
+					response = JSON.parse(response);
+					$('#submitResponse').html("<font color='red'>" + response.message + "</font>");
 				} 
 			});
 		}

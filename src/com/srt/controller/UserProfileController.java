@@ -147,15 +147,26 @@ public class UserProfileController {
 	@CacheEvict(value="profiles", key="#profile.rollNo")
 	public String updateProfile(@PathVariable("rollNo") String rollNo, @RequestBody Profile profile) {
 		logger.debug("Start: updateProfile(): Roll No: {}", rollNo);
-		String response = "SUCCESS";;
+		String response = "";
+		JSONObject jsonResponse = new JSONObject();
 		
 		try {
 			response = studentProfile.updateProfile(profile);
+			
+			if("1".equals(response)) {
+				jsonResponse.put("success", "success");
+				response = jsonResponse.put("message", "Profile updated successfully.").toString();
+			}else {
+				jsonResponse.put("failure", "failure");
+				response = jsonResponse.put("message", "Profile update failed.").toString();
+			}
 		} catch (ApplicationException e) {
 			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);
-		}	
+		}
+		
 		logger.debug("End: updateProfile(): {}", response);
+		
 		return response;
 	}
 	
@@ -228,15 +239,26 @@ public class UserProfileController {
 	public String voteUpdate(@PathVariable("rollNo") String rollNo, @RequestBody Vote vote) {
 		logger.debug("Start: voteUpdate(): {}", rollNo);
 		vote.setRollNo(rollNo);
-		String response = "SUCCESS";
+		String response = "";
+		JSONObject jsonResponse = new JSONObject();
 		
 		try {
 			response = studentProfile.updateProfileVote(vote);
+			
+			if("1".equals(response)) {
+				jsonResponse.put("success", "success");
+				response = jsonResponse.put("message", "Vote updated successfully.").toString();
+			}else {
+				jsonResponse.put("failure", "failure");
+				response = jsonResponse.put("message", "Vote update failed.").toString();
+			}
+			
 		} catch (ApplicationException e) {
 			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return ErrorResponseUtil.getFailureResponse(e);
 		}	
 		logger.debug("End: voteUpdate(): {}", response);
+		
 		return response;
 	}
 	
