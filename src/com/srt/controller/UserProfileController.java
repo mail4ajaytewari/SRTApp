@@ -1,11 +1,19 @@
 package com.srt.controller;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.support.SimpleCacheManager;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -42,6 +50,9 @@ import com.srt.util.ErrorResponseUtil;
 public class UserProfileController {
 
 	private StudentProfile studentProfile;
+	//@Autowired
+	//private ApplicationContext appContext;
+	
 	private static final Class clazz = UserProfileController.class;
 	private static final Logger logger = LoggerFactory.getLogger(clazz);
 	
@@ -65,7 +76,9 @@ public class UserProfileController {
 	 * @param iDisplayStart
 	 * @return
 	 */
+	
 	@RequestMapping(value = "/search/profiles", method = RequestMethod.POST)
+	@Cacheable("profiles")
 	public String getAllProfiles(Model model, 
 			@RequestParam String rollNo,
 			@RequestParam String firstName,
@@ -140,12 +153,17 @@ public class UserProfileController {
 	 * @return
 	 */
 	@RequestMapping(value = "/profile/user/{rollNo}", method = RequestMethod.GET)
+	@Cacheable("profiles")
 	public ResponseEntity<Profile> getUserProfile(@PathVariable("rollNo") String rollNo) {
 		logger.debug("Start: getUserProfile(): Roll No: {}", rollNo);
 		Profile profile = null;
 			
 		try {
 			profile = studentProfile.getUserProfile(rollNo);
+			
+			// To log cache
+			//logCache();
+			
 		} catch (ApplicationException e) {
 			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			return new ResponseEntity<Profile>(profile, HttpStatus.BAD_REQUEST);
@@ -161,6 +179,7 @@ public class UserProfileController {
 	 * @return
 	 */
 	@RequestMapping(value = "/profile/update/{rollNo}", method = RequestMethod.POST)
+	@CacheEvict(value="profiles", key="#profile.rollNo")
 	public String updateProfile(@PathVariable("rollNo") String rollNo, @RequestBody Profile profile) {
 		logger.debug("Start: updateProfile(): Roll No: {}", rollNo);
 		String response = "SUCCESS";;
@@ -183,6 +202,7 @@ public class UserProfileController {
 	 * @return
 	 */
 	@RequestMapping(value = "/vote/update/{rollNo}", method = RequestMethod.POST)
+	@CacheEvict(value="profiles", key="#vote.rollNo")
 	public String voteUpdate(@PathVariable("rollNo") String rollNo, @RequestBody Vote vote) {
 		logger.debug("Start: voteUpdate(): {}", rollNo);
 		vote.setRollNo(rollNo);
@@ -197,4 +217,20 @@ public class UserProfileController {
 		logger.debug("End: voteUpdate(): {}", response);
 		return response;
 	}
+	
+	/*private void logCache(){
+		SimpleCacheManager cacheMng = (SimpleCacheManager) appContext.getBean("cacheManager");
+	    Object nativeCache = cacheMng.getCache("profiles").getNativeCache();
+	    
+	    if(nativeCache instanceof ConcurrentMap){
+	    	ConcurrentMap map = (ConcurrentMap) nativeCache;
+	    	Iterator it = map.entrySet().iterator();
+	    	
+	    	while(it.hasNext()) {
+	    		Map.Entry pair = (Map.Entry)it.next();
+	    		logger.debug("Cache Key: " + pair.getKey());
+		    	logger.debug("Cache Value: " + pair.getValue());			    	
+	    	}		    	
+	    }
+	}*/
 }

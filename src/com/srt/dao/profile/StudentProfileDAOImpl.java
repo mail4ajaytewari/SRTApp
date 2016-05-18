@@ -98,7 +98,7 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}
 		
-		logger.debug("Start: searchUserProfiles");
+		logger.debug("End: searchUserProfiles");
 		return listOfProfiles;
 	}
 

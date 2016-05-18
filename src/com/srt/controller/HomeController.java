@@ -29,7 +29,8 @@ public class HomeController {
 		ModelAndView model = new ModelAndView();
 		String rollNo = (String) SessionManagementUtil.getSession().getAttribute("rollNo");;
 		model.addObject("rollNo", rollNo);
-		model.setViewName("home");		
+		model.setViewName("home");
+			
 		logger.info("End: Home Page");
 		return model;
 	}
