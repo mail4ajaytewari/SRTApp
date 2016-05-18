@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.srt.dao.profile.StudentProfileDAO;
@@ -80,15 +81,19 @@ public class StudentProfileImpl implements StudentProfile {
 	 * @see com.srt.service.profile.StudentProfile#updateProfileVote(com.srt.model.profile.Vote)
 	 */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public String updateProfileVote(Vote vote) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return studentProfileDAO.updateProfileVote(vote);
 	}
 
-	/* (non-Javadoc)
+	/* 
+	 * <p>This method updates user profile</p>
+	 * (non-Javadoc)
 	 * @see com.srt.service.profile.StudentProfile#updateProfile(com.srt.model.profile.Student)
 	 */
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public String updateProfile(Profile profile) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return studentProfileDAO.updateProfile(profile);

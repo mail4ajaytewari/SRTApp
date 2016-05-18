@@ -79,7 +79,7 @@ public class UserProfileController {
 	
 	@RequestMapping(value = "/search/profiles", method = RequestMethod.POST)
 	@Cacheable("profiles")
-	public String getAllProfiles(Model model, 
+	public String getAllProfiles( 
 			@RequestParam String rollNo,
 			@RequestParam String firstName,
 			@RequestParam String lastName,

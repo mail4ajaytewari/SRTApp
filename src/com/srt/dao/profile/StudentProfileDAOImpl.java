@@ -235,11 +235,18 @@ public class StudentProfileDAOImpl implements StudentProfileDAO {
 		paramMap.put("email", profile.getEmail());
 		paramMap.put("phone", profile.getPhone());
 		
+		// To test transaction
+		//Map<String, Object> dummyMap = new HashMap<String, Object>();
+		//dummyMap.put("dummy", "transaction");
+		
 		int response = 0;
 		
-		try {
+		try {			
 			response = getNamedParameterJdbcTemplate().update(QueryConstants.UPDATE_PROFILE, paramMap);
-		}catch(DataAccessException | NullPointerException e) {
+			
+			// To test transaction
+			//int dummyResponse = getNamedParameterJdbcTemplate().update(QueryConstants.UPDATE_DUMMY, dummyMap);
+		}catch(DataAccessException e) {
 			logger.error("{}: Data Acess Exception :: {}", "SYS-ERR-1000", e);
 			throw new ApplicationException(clazz,"Data Access Exception", "SYS-ERR-1000", e);
 		}

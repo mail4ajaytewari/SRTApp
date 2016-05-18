@@ -17,4 +17,7 @@ public interface QueryConstants {
 	final String UPDATE_VOTES = "update voteStastics set voteCount = :voteCount where rollNo = :rollNo";
 	final String UPDATE_PROFILE = "update student set firstName = :firstName, lastName = :lastName, email = :email, phone = :phone where rollNo = :rollNo";
 	final String GET_USER_CREDENTIALS = "select username, password, rollNo from login where username = :username";
+	
+	// For testing transaction
+	final String UPDATE_DUMMY = "update temp set dummy=:data where dummy=:data";
 }
