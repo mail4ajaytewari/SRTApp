@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.login.Login;
+import com.srt.model.Login;
 import com.srt.util.constants.QueryConstants;
 
 /**
@@ -45,6 +45,7 @@ public class LoginDAOImpl implements LoginDAO {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("username", username);
 		List<Login> userCred = null;
+		Login loginDetails = new Login();
 		
 		try {
 			userCred = getNamedParameterJdbcTemplate().query(QueryConstants.GET_USER_CREDENTIALS, paramMap, new RowMapper<Login>(){
@@ -64,11 +65,10 @@ public class LoginDAOImpl implements LoginDAO {
 		}
 		
 		if(null != userCred && null != userCred.get(0)) {
-			Login loginDetails = userCred.get(0);
-			return loginDetails;
+			loginDetails = userCred.get(0);
 		}
 		logger.debug("End: getUserCredentials");
-		return null;
+		return loginDetails;
 	}
 	
 }

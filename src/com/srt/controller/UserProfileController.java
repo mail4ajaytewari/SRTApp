@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.ProfileSearchRequest;
-import com.srt.model.profile.ProfileSearchResponse;
-import com.srt.model.profile.Profile;
-import com.srt.model.searchGrid.DataTable;
-import com.srt.model.vote.Vote;
+import com.srt.model.ProfileSearchRequest;
+import com.srt.model.ProfileSearchResponse;
+import com.srt.model.DataTable;
+import com.srt.model.Profile;
+import com.srt.model.Vote;
 import com.srt.service.profile.StudentProfile;
 import com.srt.util.ErrorResponseUtil;
 

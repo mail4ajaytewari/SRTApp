@@ -1,8 +1,8 @@
-package com.srt.model.profile;
+package com.srt.model;
 
 import java.util.List;
 
-import com.srt.model.searchGrid.DataTable;
+import com.srt.model.DataTable;
 
 public class ProfileSearchResponse {
 	private DataTable dataTable;

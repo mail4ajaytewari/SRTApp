@@ -43,9 +43,9 @@ function searchResults(){
 	$("#searchResultsTable").dataTable().fnDestroy();
 	
 	// Define the datatable
-	$('#searchResultsTable').dataTable({
-		iDisplayLength : 5, // Default number of records to be displayed on datatable load
-		"aLengthMenu": [[5, 10, 20],[5, 10, 20]], // Number of records selection menu
+	var oTable = $('#searchResultsTable').dataTable({
+		iDisplayLength : 25, // Default number of records to be displayed on datatable load
+		"aLengthMenu": [[25, 50, 100],[25, 50, 100]], // Number of records selection menu
 		//"bLengthChange": false,
 		"bServerSide" : true,
 		"bStateSave" : false,
@@ -56,7 +56,7 @@ function searchResults(){
 		"bJQueryUI" : true, // Apply default CSS supplied by datatable plugin
 		"sServerMethod" : "POST",
 		//"bPaginate": true,
-		//"bSort" : true,
+		"bSort" : true,
 		"sPaginationType" : "full_numbers", // Enable pagination
 		"aaSorting": [[0, 'asc']], // Default sorting by 1st columns
 		"oLanguage": {
@@ -66,14 +66,17 @@ function searchResults(){
 		}, // Define columns and their rendering logic
 		    "aoColumns" :[
 		     		     {
+		     		    	 "sWidth" : "15%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 return getEmptyString(oObj, 1);
 		     		         }
 		     		     },{
+		     		    	 "sWidth" : "15%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 return getEmptyString(oObj, 2);
 		     		         }
 		     		     },{
+		     		    	 "sWidth" : "15%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 // Disable voting link to avoid self voting
 		     		    		 if(rollNo === oObj.aData[3])
@@ -82,18 +85,22 @@ function searchResults(){
 		     		    		 return "<a class=\"rateProfileLaunch\" id='" + oObj.aData[3] + "' href=\"javascript:votePopupHandler(" + oObj.aData[3] + "," + oObj.aData[7] + ");\">" + oObj.aData[3] + "</a>";
 		     		         }
 		     		     },{
+		     		    	 "sWidth" : "15%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 return getEmptyString(oObj, 4);
 		     		         }
 		     		     },{
+		     		    	 "sWidth" : "15%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 return getEmptyString(oObj, 5);
 		     		         }
 		     		     },{
+		     		    	 "sWidth" : "15%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 return getEmptyString(oObj, 6);
 		     		         }
 		     		     },{
+		     		    	 "sWidth" : "10%",
 		     		    	 "fnRender": function (oObj){
 		     		    		 var id = oObj.aData[2];
 		     		    		 //console.log('ID: ' + id);
@@ -113,6 +120,8 @@ function searchResults(){
             aoData.push( { "name": "lastName", "value": $('#lNameSearch').val() } );
         },
 	});
+	
+	//oTable.fnAdjustColumnSizing();
 }
 
 // Open voting dialog
@@ -122,7 +131,7 @@ function votePopupHandler(rollNo, voteCount) {
 	$("#dialog-voting").data('data',data).dialog('open');
 }
 
-// Validate date from backend before rendering in datatable
+// Validate data from backend before rendering in datatable
 function getEmptyString(oObj, index){
 	//console.log('aaData: ' + oObj.aData);
 	var val = oObj.aData[index];

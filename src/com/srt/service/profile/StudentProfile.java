@@ -1,10 +1,10 @@
 package com.srt.service.profile;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.ProfileSearchRequest;
-import com.srt.model.profile.ProfileSearchResponse;
-import com.srt.model.vote.Vote;
-import com.srt.model.profile.Profile;
+import com.srt.model.ProfileSearchRequest;
+import com.srt.model.ProfileSearchResponse;
+import com.srt.model.Vote;
+import com.srt.model.Profile;
 
 public interface StudentProfile {
 	public ProfileSearchResponse searchUserProfiles(ProfileSearchRequest request) throws ApplicationException;

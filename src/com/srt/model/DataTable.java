@@ -1,4 +1,4 @@
-package com.srt.model.searchGrid;
+package com.srt.model;
 
 public class DataTable {
 	private int iDisplayStart;

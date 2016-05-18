@@ -1,4 +1,4 @@
-package com.srt.model.vote;
+package com.srt.model;
 
 public class Vote {
 	private String rollNo;

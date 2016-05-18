@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.srt.dao.profile.StudentProfileDAO;
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.ProfileSearchRequest;
-import com.srt.model.profile.ProfileSearchResponse;
-import com.srt.model.profile.Profile;
-import com.srt.model.searchGrid.DataTable;
-import com.srt.model.vote.Vote;
+import com.srt.model.ProfileSearchRequest;
+import com.srt.model.ProfileSearchResponse;
+import com.srt.model.DataTable;
+import com.srt.model.Profile;
+import com.srt.model.Vote;
 
 /**
  * @author Ajay

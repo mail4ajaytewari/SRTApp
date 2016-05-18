@@ -1,4 +1,4 @@
-package com.srt.model.login;
+package com.srt.model;
 
 public class Login {
 	private String username;

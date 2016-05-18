@@ -14,10 +14,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.srt.exception.ApplicationException;
-import com.srt.model.profile.ProfileSearchRequest;
-import com.srt.model.profile.Profile;
-import com.srt.model.searchGrid.DataTable;
-import com.srt.model.vote.Vote;
+import com.srt.model.ProfileSearchRequest;
+import com.srt.model.DataTable;
+import com.srt.model.Profile;
+import com.srt.model.Vote;
 import com.srt.util.QueryUtil;
 import com.srt.util.constants.QueryConstants;
 

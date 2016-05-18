@@ -21,17 +21,17 @@
 		</table>
 	</form>
 	
-	<div id="searchResultsDiv">
-		<table id="searchResultsTable">
-			<thead>
-				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Enrollment Number</th>
-					<th>Votes</th>
-					<th>Email</th>
-					<th>Phone</th>
-					<th>Branch Name</th>
+	<div id="searchResultsDiv" width="100%">
+		<table id="searchResultsTable" width="100%">
+			<thead width="100%">
+				<tr width="100%">
+					<th width="15%">First Name</th>
+					<th width="15%">Last Name</th>
+					<th width="15%">Enrollment Number</th>
+					<th width="10%">Votes</th>
+					<th width="15%">Email</th>
+					<th width="15%">Phone</th>
+					<th width="15%">Branch Name</th>
 				</tr>
 			</thead>
 		</table>

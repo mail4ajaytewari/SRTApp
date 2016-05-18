@@ -21,7 +21,7 @@
 		<property name="login" ref="login"/>
 	</bean>
 	
-	<bean id="login" class="com.srt.model.login.Login" scope="session">
+	<bean id="login" class="com.srt.model.Login" scope="session">
 		<aop:scoped-proxy/>
 	</bean>
  </beans>

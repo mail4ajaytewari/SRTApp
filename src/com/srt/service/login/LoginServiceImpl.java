@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.srt.dao.login.LoginDAO;
 import com.srt.exception.ApplicationException;
-import com.srt.model.login.Login;
+import com.srt.model.Login;
 import com.srt.util.AESEncryption;
 import com.srt.util.SessionManagementUtil;
 
@@ -54,14 +54,14 @@ public class LoginServiceImpl implements LoginService {
 		// TODO Auto-generated method stub
 		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
 	    authList.add(new SimpleGrantedAuthority("ROLE_USER"));
-	    UserDetails user = null;
+	    UserDetails user = new User(username, "", authList);
 	    
 	    try {
 	    	String encryptedUsername = AESEncryption.encrypt(username);
 	    	
 			login = loginDAO.getUserCredentials(encryptedUsername);
 			
-			String decryptedPwd = AESEncryption.decrypt(login.getPassword());
+			String decryptedPwd = AESEncryption.decrypt((null != login.getPassword()) ? login.getPassword() : "");
 			SessionManagementUtil.getSession().setAttribute("rollNo", login.getRollNo());
 			user = new User(username, decryptedPwd, true, true, true, true, authList);
 			

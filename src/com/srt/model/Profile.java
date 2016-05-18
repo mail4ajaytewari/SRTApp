@@ -1,4 +1,4 @@
-package com.srt.model.profile;
+package com.srt.model;
 
 public class Profile {
 	private String firstName;

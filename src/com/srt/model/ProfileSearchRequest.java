@@ -1,6 +1,6 @@
-package com.srt.model.profile;
+package com.srt.model;
 
-import com.srt.model.searchGrid.DataTable;
+import com.srt.model.DataTable;
 
 public class ProfileSearchRequest {
 	private Profile profile;
